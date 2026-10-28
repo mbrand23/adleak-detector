@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Broken Store</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; }
+    .wide { width: 1200px; height: 40px; background: #fc0; }
+    .btn { display: inline-block; padding: 14px 22px; background: #c30; color: #fff; text-decoration: none; }
+    @media (max-width: 600px) { .desktop-only { display: none; } }
+  </style>
+  <script src="/missing.js"></script>
+</head>
+<body>
+  <nav><a href="#">Menu</a> <a href="#reviews">Reviews</a> <a href="#">&lt;img src=x onerror="window.__xss=1"&gt;</a></nav>
+  <div class="wide">Promo banner with a fixed 1200px width</div>
+  <h1>Limited offer</h1>
+  <img src="/missing.png" width="300" height="200" alt="Hero">
+  <img src="http://192.168.1.20/banner.png" width="10" height="10" alt="">
+  <p><a class="btn" href="javascript:void(0)">Buy now</a></p>
+  <p><button class="btn" disabled>Add to cart</button></p>
+  <p class="desktop-only"><a class="btn" href="/checkout">Order now</a></p>
+  <p><a class="btn" href="https://wa.me/08012345678">Chat on WhatsApp</a></p>
+  <p><a href="/status/404">&lt;img src=x onerror="window.__xss=1"&gt; Old offer</a></p>
+  <p><a href="/status/500">Shipping info</a></p>
+  <p><a href="http://localhost:3000/dev-preview">Preview</a></p>
+  <script>throw new Error("fixture: checkout widget crashed");</script>
+</body>
+</html>

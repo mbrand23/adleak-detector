@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdLeak Detector</title>
+  <meta name="description" content="Find technical problems in your website and ad landing pages. Free local beta.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#/">
+        <img src="/favicon.svg" alt="" width="28" height="28">
+        <span>AdLeak Detector</span>
+        <span class="beta">Free beta</span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="#/" data-nav="home">Scan</a>
+        <a href="#/history" data-nav="history">Report history</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="view" class="wrap" tabindex="-1">
+    <noscript><p class="notice">AdLeak Detector needs JavaScript enabled in your browser.</p></noscript>
+  </main>
+
+  <template id="home-template">
+    <section class="hero">
+      <h1>Find out what's quietly breaking your ad funnel</h1>
+      <p class="lede">Paste a website or ad landing page address. AdLeak loads it in a real browser on desktop and mobile and reports broken links, dead buttons, dropped UTM parameters, missing tracking signals and layout problems, with the evidence for each one.</p>
+      <form id="scan-form" class="scan-form" novalidate>
+        <label for="url-input" class="sr-only">Website or landing page address</label>
+        <div class="scan-row">
+          <input id="url-input" name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false"
+                 placeholder="https://yourstore.com/offer?utm_source=facebook" maxlength="2048" required>
+          <button type="submit" class="btn primary" id="scan-button">Scan website</button>
+        </div>
+        <details class="options">
+          <summary>Scan options</summary>
+          <fieldset>
+            <legend>Tags I expect on this page <span class="muted">(so a missing one is flagged)</span></legend>
+            <label><input type="checkbox" name="meta"> Meta Pixel</label>
+            <label><input type="checkbox" name="ga4"> Google Analytics 4</label>
+            <label><input type="checkbox" name="gtm"> Google Tag Manager</label>
+          </fieldset>
+          <label class="inline"><input type="checkbox" name="screenshots" checked> Save screenshots with the report</label>
+        </details>
+        <p id="form-error" class="form-error" role="alert" hidden></p>
+        <p class="hint">Works with Shopify, WordPress, WooCommerce, Elementor, Thrive Architect and custom sites. No plugin, app or ad-account login needed. For ad URLs, paste the full link including its <code>?utm_</code> parameters.</p>
+      </form>
+      <p id="usage-line" class="usage muted"></p>
+    </section>
+
+    <section class="section">
+      <h2>What a scan checks</h2>
+      <div class="grid features">
+        <article class="feature"><h3>Page access</h3><p>Response codes, redirects, final destination, timeouts, SSL and DNS problems. Failed loads are retried before they're reported.</p></article>
+        <article class="feature"><h3>Broken links</h3><p>Up to 40 links per scan, sales buttons first. Placeholder links, missing page sections and redirect chains are flagged.</p></article>
+        <article class="feature"><h3>Sales actions</h3><p>Order Now, Buy Now, Add to Cart, WhatsApp, Call and Contact buttons and lead forms: visible, enabled, not covered, pointing somewhere real.</p></article>
+        <article class="feature"><h3>Tracking signals</h3><p>Meta Pixel, Google Analytics 4 and Google Tag Manager scripts and events seen in the browser, including duplicate installs.</p></article>
+        <article class="feature"><h3>Campaign URLs</h3><p>Whether UTM and click-ID parameters survive every redirect, plus domain changes, HTTPS downgrades and script redirects.</p></article>
+        <article class="feature"><h3>Mobile layout</h3><p>Horizontal overflow (with the elements causing it), viewport tag, hidden buttons, small tap targets, broken images and failed scripts.</p></article>
+      </div>
+    </section>
+
+    <section class="section two-col">
+      <div>
+        <h2>How it works</h2>
+        <ol class="steps">
+          <li><strong>Validate.</strong> The address is checked so the scanner only ever contacts public websites.</li>
+          <li><strong>Load.</strong> A fresh Chromium browser opens the page twice, as a desktop and as a phone, and records its network traffic.</li>
+          <li><strong>Inspect.</strong> Buttons, links, images, layout and tags are measured. Nothing is clicked, typed or submitted.</li>
+          <li><strong>Report.</strong> Each result is marked Passed, Failed, Warning or Inconclusive, with evidence and a suggested fix.</li>
+        </ol>
+      </div>
+      <div class="limits">
+        <h2>What it can't tell you</h2>
+        <ul>
+          <li>It can't see your ad accounts or server-side tracking, so it never says how much money was lost.</li>
+          <li>A tag that waits for cookie consent won't fire; AdLeak never accepts consent banners.</li>
+          <li>It doesn't place orders, submit forms or send WhatsApp messages, so it can't test checkout completion.</li>
+          <li>Sites with bot protection may block it. Those results are marked inconclusive, not broken.</li>
+          <li>Tracking beacons are recorded and then blocked, so a scan won't add fake visits to your analytics.</li>
+        </ul>
+      </div>
+    </section>
+  </template>
+
+  <footer class="footer">
+    <div class="wrap">AdLeak Detector local beta. Runs on this computer only (127.0.0.1). Scan only websites you own or are allowed to test.</div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Good Store - Working sales page</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; }
+    header, main { padding: 16px; max-width: 100%; }
+    .btn { display: inline-block; padding: 14px 22px; background: #0a7; color: #fff; text-decoration: none; border: 0; font-size: 18px; }
+    img { max-width: 100%; height: auto; }
+  </style>
+  <script src="http://connect.facebook.net/en_US/fbevents.js"></script>
+  <script>fbq('init', '111222333'); fbq('track', 'PageView');</script>
+  <script src="http://www.googletagmanager.com/gtm.js?id=GTM-TEST1"></script>
+  <script src="http://www.googletagmanager.com/gtag/js?id=G-TEST1"></script>
+  <script>gtag('config', 'G-TEST1');</script>
+</head>
+<body>
+  <header><a href="/about.html">About us</a> <a href="#reviews">Reviews</a></header>
+  <main>
+    <h1>Hydrating face cream</h1>
+    <img src="/img/product.svg" width="320" height="200" alt="Product photo">
+    <p><a class="btn" href="/checkout">Buy Now</a></p>
+    <form action="/cart/add" method="post">
+      <button class="btn" type="submit">Add to cart</button>
+    </form>
+    <p><a class="btn" href="https://wa.me/2348012345678?text=Hi">Order on WhatsApp</a></p>
+    <section id="reviews"><h2>Reviews</h2><p>Lovely.</p></section>
+  </main>
+</body>
+</html>

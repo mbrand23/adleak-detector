@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Overflow page</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+    .wide { width: 1200px; height: 60px; background: #fc0; }
+    .btn { display: inline-block; padding: 14px 22px; background: #0a7; color: #fff; text-decoration: none; }
+    @media (max-width: 600px) { .desktop-only { display: none; } }
+  </style>
+</head>
+<body>
+  <h1>Summer sale</h1>
+  <table class="wide"><tr><td>Size chart with a fixed 1200px width</td></tr></table>
+  <p><a class="btn" href="/checkout">Buy now</a></p>
+  <p class="desktop-only"><a class="btn" href="/checkout?fast=1">Order now</a></p>
+</body>
+</html>
