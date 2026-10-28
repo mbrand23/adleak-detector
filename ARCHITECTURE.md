@@ -49,7 +49,7 @@ These are application-level controls in one process. They are **not** enough for
 ## Local server hardening
 
 - Binds to `127.0.0.1` and refuses any non-loopback address.
-- `Host` header must be `127.0.0.1:<port>`, `localhost:<port>` or `[::1]:<port>` (stops DNS-rebinding attacks from other websites).
+- `Host` header must be `127.0.0.1:<port>`, `localhost:<port>` or `[::1]:<port>` (stops DNS-rebinding attacks from other websites). With `--tailscale`, this PC's private Tailscale name is also accepted, and only with an `https://` origin, because `tailscale serve` forwards that name to 127.0.0.1 over HTTPS (see PHONE_ACCESS.md). Extra names must be plain hostnames; wildcards, schemes and ports are rejected.
 - State-changing requests (`POST`, `DELETE`) must be same-origin (`Origin` and `Sec-Fetch-Site` checks) and `application/json`, so other sites open in the browser can't start or delete scans.
 - 8 KB request body limit; static files come from a fixed allow-list; scan IDs are 32-hex and screenshot names come from a fixed set, so no user input becomes a file path.
 - Strict CSP (`script-src 'self'`, no inline script), `nosniff`, `X-Frame-Options: DENY`, `no-referrer`, `no-store`.

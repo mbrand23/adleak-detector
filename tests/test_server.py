@@ -9,7 +9,7 @@ import urllib.request
 
 import pytest
 
-from adleak.config import Settings
+from adleak.config import Settings, parse_hostname
 from adleak.plans import Plan
 from adleak.server import App, make_server
 
@@ -128,6 +128,33 @@ def test_fair_use_limit_returns_429(app_server):
         assert status == 429 and "Fair-use limit" in json.loads(body)["error"]
     finally:
         app.fair_use.plan = original
+
+
+def test_tailscale_host_is_accepted_only_over_https(tmp_path):
+    name = "my-pc.tail1234.ts.net"
+    app = App(Settings(port=0, data_dir=tmp_path, extra_hosts=(name,)))
+    server = make_server(app)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    base = f"http://127.0.0.1:{app.port}"
+    try:
+        # `tailscale serve` forwards https://<name>/ with Host: <name>
+        assert call(base, "/api/health", headers={"Host": name})[0] == 200
+        assert call(base, "/api/health", headers={"Host": "other-pc.tail1234.ts.net"})[0] == 421
+        bad_url = {"url": "javascript:alert(1)"}
+        ok_origin = call(base, "/api/scans", method="POST", body=bad_url, headers={"Host": name, "Origin": f"https://{name}"})
+        assert ok_origin[0] == 400  # passed the origin check, rejected only for the URL
+        assert call(base, "/api/scans", method="POST", body=bad_url, headers={"Host": name, "Origin": f"http://{name}"})[0] == 403
+        assert call(base, "/api/scans", method="POST", body=bad_url, headers={"Host": name, "Origin": "https://evil.example.com"})[0] == 403
+    finally:
+        server.shutdown()
+        server.server_close()
+
+
+@pytest.mark.parametrize("bad", ["*.ts.net", "https://my-pc.ts.net", "my-pc.ts.net:443", "my-pc.ts.net/x", "localhost", "", "a b.ts.net"])
+def test_extra_host_must_be_plain_hostname(bad):
+    with pytest.raises(ValueError):
+        parse_hostname(bad)
+    assert parse_hostname("My-PC.tail1234.ts.net.") == "my-pc.tail1234.ts.net"
 
 
 def test_refuses_non_loopback_bind(tmp_path):

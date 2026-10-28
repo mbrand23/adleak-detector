@@ -19,6 +19,10 @@ Running it from a terminal instead:
 
 Options: `--port 8766` to use another port, `--no-browser` to stop the browser opening. Reports are stored in `data\` (set `ADLEAK_DATA_DIR` to move them).
 
+### Use it from your phone
+
+Install Tailscale on this PC and your phone, then start AdLeak with **`start-with-tailscale.bat`**. Your phone opens it at a private `https://<your-pc>.<tailnet>.ts.net/` address that only your own devices can reach. Step-by-step setup is in [PHONE_ACCESS.md](PHONE_ACCESS.md). Never use `tailscale funnel` with AdLeak: that would make it public.
+
 ## What a scan checks
 
 | Area | Examples |

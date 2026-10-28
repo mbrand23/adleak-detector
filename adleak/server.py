@@ -66,10 +66,16 @@ class App:
         self.port = settings.port
 
     def allowed_hosts(self) -> set[str]:
-        return {f"127.0.0.1:{self.port}", f"localhost:{self.port}", f"[::1]:{self.port}"}
+        hosts = {f"127.0.0.1:{self.port}", f"localhost:{self.port}", f"[::1]:{self.port}"}
+        for name in self.settings.extra_hosts:
+            hosts |= {name, f"{name}:443"}
+        return hosts
 
     def allowed_origins(self) -> set[str]:
-        return {f"http://{h}" for h in self.allowed_hosts()}
+        origins = {f"http://127.0.0.1:{self.port}", f"http://localhost:{self.port}", f"http://[::1]:{self.port}"}
+        # Extra hosts arrive through `tailscale serve`, which always uses HTTPS.
+        origins |= {f"https://{name}" for name in self.settings.extra_hosts}
+        return origins
 
     # -- API operations ----------------------------------------------------
     def create_scan(self, body: dict) -> tuple[int, dict]:

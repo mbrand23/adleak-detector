@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -40,12 +41,29 @@ class Settings:
     max_concurrent_scans: int = 2
     max_queued_scans: int = 6
     max_stored_reports: int = 200
+    # Extra hostnames the browser may use to reach this app, for example the
+    # private Tailscale name that `tailscale serve` forwards to 127.0.0.1.
+    # The server still binds to 127.0.0.1 only.
+    extra_hosts: tuple[str, ...] = ()
+
+
+_HOSTNAME = re.compile(r"^(?=.{1,253}$)([a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)(\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$")
+
+
+def parse_hostname(value: str) -> str:
+    """Validate one extra hostname: a plain DNS name, no scheme, port, path or wildcard."""
+    name = value.strip().lower().rstrip(".")
+    if not _HOSTNAME.match(name):
+        raise ValueError(f"'{value}' is not a plain hostname such as my-pc.tail1234.ts.net")
+    return name
 
 
 def load_settings() -> Settings:
     data_dir = Path(os.environ.get("ADLEAK_DATA_DIR", PROJECT_ROOT / "data"))
+    extra = tuple(parse_hostname(h) for h in os.environ.get("ADLEAK_ALLOWED_HOSTS", "").split(",") if h.strip())
     return Settings(
         port=_int_env("ADLEAK_PORT", 8765),
         data_dir=data_dir,
         max_concurrent_scans=max(1, min(4, _int_env("ADLEAK_CONCURRENCY", 2))),
+        extra_hosts=extra,
     )

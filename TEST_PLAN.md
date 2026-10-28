@@ -34,8 +34,10 @@ Also covered: tracking beacons never reach the fixture (`/tr` and `/g/collect` h
 Run on 28 October 2026, Windows 11 Pro, Python 3.14.0, Playwright 1.64.1, Chromium 156.0.8078.4:
 
 ```
-105 passed in 139.00s
+113 passed in 224.36s
 ```
+
+(Includes the Tailscale access tests: the private Tailscale name is accepted only with an `https://` origin, other names get 421, and wildcards, schemes and ports are rejected as extra hostnames. Tailscale itself was not installed, so the `tailscale serve` path from a real phone is **unverified**.)
 
 Manual checks the same day:
 
